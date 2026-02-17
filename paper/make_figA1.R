@@ -356,7 +356,7 @@ if(ncol(bm_params) == 3) {
 # ============================================
 
 # Save as PDF (recommended for publications)
-dev.copy(pdf, "paper/plots/figA2", width = 8, height = 3)
+dev.copy(pdf, "paper/plots/figA1.pdf", width = 8, height = 3)
 dev.off()
 
 # Save as high-resolution PNG
