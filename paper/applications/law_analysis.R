@@ -1,7 +1,7 @@
 rm(list = ls())
 # Law School
 # data("lsa", package = "qeML")
-load("05_input/lsa.RData") # I was being lazy
+load("data/lsa.RData") # I was being lazy
 headtail <- \(x) c(head = head(x), tail = tail(x))
 
 lsa <- lsa |>
@@ -33,7 +33,7 @@ summary(mdl)
 dfb <- stats::dfbeta(mdl)[, 2:6]
 
 #===== Estimation of EVD =========
-source('00_code/dfbeta_funcs.R')
+source('R/4_bootstrap-dfb.R')
 lm_data <- model.matrix(mdl)
 lm_data |> dimnames() |> _[[2]][4]
 

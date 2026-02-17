@@ -3,7 +3,7 @@ headtail <- \(x) c(head = head(x), tail = tail(x))
 
 # Sparrows ---
 # Multiple reg of tarsus length ~ head (susceptible), wing, beak length
-sparrow <- read.delim("05_input/SparrowsElphick.txt")
+sparrow <- read.delim("data/SparrowsElphick.txt")
 
 # f <- tarsus ~ head + wingcrd + culmen
 # mdl <- lm(f, data = sparrow)
@@ -23,7 +23,7 @@ stats::dfbeta(mdl_i)[, 2] |> sort() |> headtail()
 
 #########################################################
 # ---- Biggest Outlier
-source('00_code/dfbeta_funcs.R')
+source('R/4_bootstrap-dfb.R')
 lm_data <- sparrow[,c('tarsus', 'head', 'wingcrd', 'flatwing', 'culmen', 'nalospi', 'wt', 'Sex', 'Age')]
 lm_data <- cbind(lm_data, 1)
 

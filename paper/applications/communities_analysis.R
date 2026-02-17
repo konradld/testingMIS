@@ -1,6 +1,6 @@
 rm(list = ls())
 data <- read.csv(
-  "05_input/communities.data",
+  "data/communities.data",
   header = FALSE,
   na.strings = "?"
 )
@@ -161,7 +161,7 @@ summary(mdl_rm)
 # summary(mdl_rm)
 
 #########################################################
-source('00_code/dfbeta_funcs.R')
+source('R/4_bootstrap-dfb.R')
 # lm_data <- data[, which(colSums(is.na(data)) == 0)] |>
 #   dplyr::select(-communityname, -state, -fold)
 # lm_data <- cbind(lm_data, 1)

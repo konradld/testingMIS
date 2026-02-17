@@ -12,7 +12,7 @@ summary(mdl2)
 #===== Estimation of EVD =========
 
 # ---- looking at crime
-source('00_code/dfbeta_funcs.R')
+source('R/4_bootstrap-dfb.R')
 lm_data <- model.matrix(mdl)
 lm_data |> dimnames() |> _[[2]][2]
 

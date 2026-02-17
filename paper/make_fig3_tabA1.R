@@ -2,7 +2,7 @@ rm(list = ls())
 try(dev.off())
 
 # set.seed(1234)
-source('./00_code/dfbeta_funcs.R')
+source('R/4_bootstrap-dfb.R')
 
 # Load required libraries
 library(evd)

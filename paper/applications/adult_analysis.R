@@ -3,7 +3,7 @@ rm(list = ls())
 headtail <- \(x) c(head = head(x), tail = tail(x))
 # Adult ---
 data <- read.csv(
-  "05_input/adult.data",
+  "data/adult.data",
   header = FALSE,
   na.strings = "?"
 )
@@ -45,7 +45,7 @@ mdl <- lm(
 
 
 #===== Estimation of EVD =========
-source('00_code/dfbeta_funcs.R')
+source('R/4_bootstrap-dfb.R')
 lm_data <- model.matrix(mdl)[,-which(colnames(model.matrix(mdl)) == "occupation Transport-moving")] # exclude 34 bc of perfect multicolinearity
 lm_data |> dimnames() |> _[[2]][43]
 
