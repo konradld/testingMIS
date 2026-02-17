@@ -1,6 +1,22 @@
 rm(list = ls())
 source("R/4_bootstrap-dfb.R")
 
+rdfbeta <- function(
+                draw, n, nS = 1,
+                xdist = \(n) rnorm(n), rdist = \(n) rnorm(n)) {
+        X <- matrix(xdist(draw * nS), ncol = nS)
+        R <- matrix(rdist(draw * nS), ncol = nS)
+        
+        if (identical(xdist, \(n) rnorm(n))) {
+                D <- rchisq(draw, n - nS)
+        } else {
+                D <- replicate(draw, sum(xdist(n - nS)^2))
+        }
+        
+        dfb <- rowSums(R * X) / D
+        return(dfb)
+}
+
 n <- c(25, 50, 100)
 dfb    <- sapply(n, \(i) rdfbeta(1e7, i, 1))
 maxdfb <- sapply(n, \(i) replicate(1e5, rmaxdfbeta(i)))

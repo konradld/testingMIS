@@ -35,42 +35,6 @@ dfbeta.numeric <- function(
 }
 
 
-#' @description
-#' Simulates a distribution of DFBETA or max(DFBETA) values using an optimized algorithm.
-#'
-#' @param draw Number of simulation iterations
-#' @param n Sample size
-#' @param nS Number of considered influential observatoins (default: 1)
-#' @param xdist Function to generate X distribution (default: standard normal)
-#' @param rdist Function to generate R (residuals) distribution (default: standard normal)
-#' @param do_normalize_x Whether to normalize X variables (default: FALSE)
-#' @param do_normalize_r Whether to normalize residuals (default: FALSE)
-#' @param do_normalize_dfb Whether to normalize final DFBETA values (default: FALSE)
-#'
-#' @return A numeric vector of length `draw` containing (maximum) DFBETA values
-#' from each simulation iteration.
-rdfbeta <- function(
-    draw, n, nS = 1,
-    xdist = \(n) rnorm(n), rdist = \(n) rnorm(n),
-    do_normalize_x = FALSE, do_normalize_r = FALSE, do_normalize_dfb = FALSE) {
-  X <- matrix(xdist(draw * nS), ncol = nS)
-  R <- matrix(rdist(draw * nS), ncol = nS)
-
-  if (do_normalize_x) { X <- scale(X) }
-  if (do_normalize_r) { R <- scale(R) }
-
-  if (identical(xdist, \(n) rnorm(n))) {
-    D <- rchisq(draw, n - nS)
-  } else {
-    D <- replicate(draw, sum(xdist(n - nS)^2))
-  }
-
-  dfb <- rowSums(R * X) / D
-  if (do_normalize_dfb) { dfb <- scale(dfb) }
-
-  return(dfb)
-}
-
 #===============================================================================
 #               Functions for testing Maximum Infl. Set
 #===============================================================================
@@ -99,7 +63,7 @@ estimate_dfb_evd <- function(y, X1, Xother, S, block_count=20) {
   fwl_lm <- lm(Y~X-1)
   R <- fwl_lm$residuals
   
-  Sdfb <- dfbeta(Y,X,S)
+  Sdfb <- dfbeta.numeric(Y,X,S)
   
   # check if X and R are sufficiently small tailed
   bm_X <- apply(blocks(X[-S],length(X[-S])%/%block_count),2,max)

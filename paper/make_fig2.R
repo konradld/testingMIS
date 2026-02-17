@@ -59,7 +59,7 @@ data_clean <- data[data$type == "Regular", ]
 model_clean <- lm(y ~ x - 1, data = data_clean)
 
 # Calculate DFBETA for influential set
-Sdfb <- dfbeta(y_all, x_all, S = S)
+Sdfb <- dfbeta.numeric(y_all, x_all, S = S)
 
 # ============================================
 # Block Maximum Analysis
