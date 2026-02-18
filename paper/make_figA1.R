@@ -1,7 +1,5 @@
-rm(list = ls())
-try(dev.off())
-source('./R/4_bootstrap-dfb.R')
 library(evd)
+source('./R/4_bootstrap-dfb.R')
 
 # ── Parameters ────────────────────────────────────────────────────────────────
 nS          <- 1
