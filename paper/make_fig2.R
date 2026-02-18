@@ -1,9 +1,6 @@
-rm(list = ls())
-try(dev.off())
-set.seed(1234)
-
 library(evd)
 source('R/4_bootstrap-dfb.R')
+set.seed(1234)
 
 # ── Data ─────────────────────────────────────────────────────────────────────
 n <- 100
