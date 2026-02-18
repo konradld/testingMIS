@@ -1,4 +1,3 @@
-rm(list = ls())
 source("R/4_bootstrap-dfb.R")
 
 rdfbeta <- function(
