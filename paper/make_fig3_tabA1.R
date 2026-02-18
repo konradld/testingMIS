@@ -1,6 +1,3 @@
-rm(list = ls())
-try(dev.off())
-
 library(evd); library(extRemes); library(stargazer)
 source('R/4_bootstrap-dfb.R')
 
