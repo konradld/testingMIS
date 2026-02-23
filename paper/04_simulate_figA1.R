@@ -7,7 +7,7 @@ source('R/05_rmaxdfbeta.R')
 nS          <- 1
 N           <- 5000 + nS
 block_count <- 30
-M           <- 100
+M           <- 1000
 xdist       <- \(n) rnorm(n, 0, sqrt(2))
 rdist       <- \(n) rnorm(n, 0, sqrt(2))
 
