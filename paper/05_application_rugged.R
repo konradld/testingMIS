@@ -1,13 +1,17 @@
 library(dplyr); library(stargazer); library(evd)
-source('R/4_bootstrap-dfb.R')
+source('R/01_estimate_dfb_evd.R')
+source('R/06_fwl.R')
 
 # ── Data & Model ──────────────────────────────────────────────────────────────
 ruggedness <- read.csv("https://github.com/nk027/influential_sets/raw/refs/heads/main/paper/data/rugged_data.csv") |>
   mutate(diamonds = gemstones / (land_area / 100))
+ruggedness[, 3] <- sub("Swaziland", "Eswatini", ruggedness[, 3]) # rename Swaziland
+
+mf <- model.frame(log(rgdppc_2000) ~ rugged * cont_africa +
+                    dist_coast * cont_africa, data = ruggedness)
 
 # Create model frame AND matrix together
-mdl <- lm(log(rgdppc_2000) ~ rugged*cont_africa + dist_coast*cont_africa,
-          data = ruggedness)
+mdl <- lm(mf)
 
 y <- model.response(model.frame(mdl))
 X <- model.matrix(mdl)
