@@ -1,6 +1,6 @@
 # Testing Most Influential Sets
 
-R implementation accompanying the paper *"Testing Most Influential Sets"* by Lucas D. Konrad and Nikolas Kuschnig.
+R implementation accompanying the paper [*"Testing Most Influential Sets"*](https://openreview.net/forum?id=zJ2AJz6xLO) by [Lucas D. Konrad](https://lucaskonrad.eu) and [Nikolas Kuschnig](https://www.kuschnig.eu/).
 
 ## Overview
 
@@ -23,7 +23,7 @@ The implementation provides:
 ## Installation
 
 ```r
-# Install dependencies
+# Install external dependencies
 install.packages(c("devtools", "evd"))
 
 # Install from GitHub
@@ -131,10 +131,12 @@ result$set_dfb
 ## Citation
 
 ```bibtex
-@article{konrad2025testing,
-  title={Testing Most Influential Sets},
-  author={Konrad, Lucas D. and Kuschnig, Nikolas},
-  year={2025}
+@misc{konrad_testing_2025,
+  title  = {Testing Most Influential Sets},
+  author = {Konrad, Lucas D. and Kuschnig, Nikolas},
+  year   = {2025},
+  note   = {arXiv:2510.20372 [stat.ML]},
+  url    = {https://arxiv.org/abs/2510.20372}
 }
 ```
 
