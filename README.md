@@ -32,7 +32,7 @@ devtools::install_github("konradld/testing_mis")
 
 ## Function Reference
 
-### Core Functions
+### Main Functions
 
 #### `estimate_dfb_evd(y, X1, Xother, S, block_count = 20)`
 
