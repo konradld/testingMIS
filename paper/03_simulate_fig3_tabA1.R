@@ -1,5 +1,6 @@
 library(evd); library(extRemes); library(stargazer)
-source('R/4_bootstrap-dfb.R')
+source('R/01_estimate_dfb_evd.R')
+source('R/05_rmaxdfbeta.R')
 
 # ── Parameters ────────────────────────────────────────────────────────────────
 nS    <- 1

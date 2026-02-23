@@ -1,5 +1,5 @@
 library(evd)
-source('R/4_bootstrap-dfb.R')
+source('R/01_estimate_dfb_evd.R')
 
 # ── Data & Model ──────────────────────────────────────────────────────────────
 sparrow <- read.delim("data/SparrowsElphick.txt")

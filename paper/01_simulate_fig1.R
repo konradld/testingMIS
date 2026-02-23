@@ -1,4 +1,5 @@
-source("R/4_bootstrap-dfb.R")
+source('R/01_estimate_dfb_evd.R')
+source('R/05_rmaxdfbeta.R')
 
 rdfbeta <- function(
                 draw, n, nS = 1,

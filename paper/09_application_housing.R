@@ -1,5 +1,6 @@
 library(evd)
-source('R/4_bootstrap-dfb.R')
+source('R/01_estimate_dfb_evd.R')
+source('R/06_fwl.R')
 
 # ── Data & Model ──────────────────────────────────────────────────────────────
 d   <- MASS::Boston
@@ -37,6 +38,3 @@ cat("p-value:", 1 - pgev(Sdfb, loc_adj, p[2], shape=0.2916), "\n")
 
 fwl_lm2 <- lm(fwl_vars[-S,1] ~ fwl_vars[-S,2] - 1)
 cat("Coef shift:", fwl_lm2$coefficients - fwl_lm$coefficients, "\n")
-
-summary(fwl_lm);  summary(fwl_lm2)
-summary(mdl);     summary(lm(medv ~ ., data=d[-S,]))

@@ -1,5 +1,6 @@
 library(evd)
-source('R/4_bootstrap-dfb.R')
+source('R/01_estimate_dfb_evd.R')
+source('R/02_dfbeta.numeric.R')
 set.seed(1234)
 
 # ── Data ─────────────────────────────────────────────────────────────────────

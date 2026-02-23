@@ -1,5 +1,6 @@
 library(dplyr); library(evd)
-source('R/4_bootstrap-dfb.R')
+source('R/01_estimate_dfb_evd.R')
+source('R/06_fwl.R')
 
 # ── Data & Model ──────────────────────────────────────────────────────────────
 load("data/lsa.RData")

@@ -1,11 +1,13 @@
 library(evd)
-source('./R/4_bootstrap-dfb.R')
+source('R/01_estimate_dfb_evd.R')
+source('R/03_dfb_bmx.R')
+source('R/05_rmaxdfbeta.R')
 
 # ── Parameters ────────────────────────────────────────────────────────────────
 nS          <- 1
 N           <- 5000 + nS
 block_count <- 30
-M           <- 1000
+M           <- 100
 xdist       <- \(n) rnorm(n, 0, sqrt(2))
 rdist       <- \(n) rnorm(n, 0, sqrt(2))
 
