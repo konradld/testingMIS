@@ -142,4 +142,4 @@ result$set_dfb
 
 ## License
 
-[i dont know - pls check]
+GNU General Public License version 3 (GPLv3)
