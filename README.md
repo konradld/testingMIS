@@ -131,7 +131,7 @@ result$set_dfb
 ## Citation
 
 ```bibtex
-@misc{konrad_testing_2025,
+@misc{konrad_kuschnig_2025,
   title  = {Testing Most Influential Sets},
   author = {Konrad, Lucas D. and Kuschnig, Nikolas},
   year   = {2025},
