@@ -5,7 +5,7 @@ source('R/06_fwl.R')
 # ── Data & Model ──────────────────────────────────────────────────────────────
 ruggedness <- read.csv("https://github.com/nk027/influential_sets/raw/refs/heads/main/paper/data/rugged_data.csv") |>
   mutate(diamonds = gemstones / (land_area / 100))
-ruggedness[, 3] <- sub("Swaziland", "Eswatini", ruggedness[, 3])
+ruggedness[ruggedness[, 3] == "Swaziland",3] <- "Eswatini"
 
 mf <- model.frame(log(rgdppc_2000) ~ rugged * cont_africa +
                     dist_coast * cont_africa, data = ruggedness)
