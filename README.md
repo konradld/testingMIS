@@ -102,6 +102,7 @@ The testing procedure follows three steps from Section 3.2 of the paper: (1) cho
 
 ```r
 library(evd)
+source('R/01_estimate_dfb_evd.R')
 
 set.seed(42)
 n <- 500
