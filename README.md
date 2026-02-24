@@ -22,7 +22,7 @@ The implementation provides:
 
 To install from GitHub run:
 ```r
-devtools::install_github("konradld/testing_mis")
+devtools::install_github("konradld/testingMIS")
 ```
 
 ## Quick Example
