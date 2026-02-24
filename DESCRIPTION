@@ -7,7 +7,7 @@ Authors@R: c(
   person("Nikolas", "Kuschnig", role = c("aut", "cre"), email = "nikolas.kuschnig@monash.edu", comment = c(ORCID = "0000-0002-6642-2543")),
   person("Lucas D.", "Konrad", role = c("aut"), email = "lucas.konrad@wu.ac.at", comment = c(ORCID = "0009-0001-5915-4798")))
 Author: Nikolas Kuschnig [aut, cre] (<https://orcid.org/0000-0002-6642-2543>),
-    Lukas Vashold [aut, cre] (<https://orcid.org/0009-0001-5915-4798>),
+    Lucas D. Konrad [aut] (<https://orcid.org/0009-0001-5915-4798>),
 Maintainer: Nikolas Kuschnig <nikolas.kuschnig@monash.edu>
 Description: Principled hypothesis testing of most influential sets in linear
     least-squares regression following Konrad & Kuschnig (2026).
@@ -17,5 +17,4 @@ Depends: R (>= 4.2.0)
 Imports: evd
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.3.3
