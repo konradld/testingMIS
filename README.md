@@ -4,7 +4,7 @@ R package accompanying the paper [*"Testing Most Influential Sets"*](https://ope
 
 ## Overview
 
-Small subsets of observations can dramatically change regression estimates -- a handful of data points may overturn key findings. While methods exist to identify these most influential sets, there has been no principled way to determine whether the observed influence is excessive or simply expected under normal sampling variation.
+Small subsets of observations can dramatically change regression estimates, and a handful of data points may overturn key findings. While methods exist to identify these most influential sets, there has been no principled way to determine whether the observed influence is excessive or simply expected under normal sampling variation.
 
 This package implements a statistical framework for **hypothesis testing of most influential sets** in linear least-squares regression. The approach derives the extreme value distribution (EVD) of maximal influence and uses it as a null distribution. Two regimes emerge depending on set size and tail behavior:
 
@@ -16,19 +16,18 @@ The implementation provides:
 - An exact closed-form influence formula for observation sets (Proposition 1), avoiding model re-fitting.
 - EVD estimation via the block-maxima method with a greedy algorithm to approximate maximum influence within each block.
 - Hypothesis testing: given a candidate set, estimate the null EVD and compute a p-value.
-- The Frisch-Waugh-Lovell (FWL) theorem to partial out nuisance regressors, reducing the problem to a univariate one.
 - Simulation utilities for Monte Carlo study of maximum influence distributions.
 
 ## Installation
 
+To install from GitHub run:
 ```r
-# Install from GitHub
 devtools::install_github("konradld/testing_mis")
 ```
 
 ## Quick Example
 
-The testing procedure follows three steps (Section 3.2 of the paper): (1) classify the EVD family based on tail behavior, (2) estimate EVD parameters via block maxima, and (3) compute a p-value for the candidate set's influence.
+The testing procedure follows three steps: (1) classify the EVD family based on tail behavior, (2) estimate EVD parameters via block maxima, and (3) compute a p-value for the candidate set's influence.
 
 ```r
 library("testingMIS")
@@ -60,45 +59,17 @@ result$set_dfb
 )
 ```
 
-## Function Reference
+## Reference
 
-### `estimate_dfb_evd(y, x, Z, set, block_count = 20, verbose = TRUE)`
+- `estimate_dfb_evd(y, x, Z, set, block_count = 20)`: Main testing function implementing the three-step procedure from Section 3.2. Uses FWL to partial out `Z`, estimates tail coefficients of X and R to classify Gumbel vs Frechet (Theorem 1 / Corollary 1), then fits a GEV distribution to block maxima. Returns a list with:
+  - `$params` -- named vector of GEV parameters (`loc`, `scale`, `shape`).
+  - `$set_dfb` -- observed DFBETA of the candidate set.
+  - `$block_maxima` -- the block-maxima values used for fitting.
+- `dfbeta_numeric(y, X, set, col_X = 1L)`: Computes the exact set influence for a subset `set` in a no-intercept regression of `y` on column `col_X` of `X`. Implements the closed-form formula from Proposition 1 in the univariate (FWL-residualized) case.
+- `dfb_bmx(X, R, set, block_count)`: Constructs block maxima of set influence for EVD parameter estimation (Step 2). Divides the data (excluding `set`) into blocks, then uses a greedy algorithm within each block to approximate the most influential set of size `|S|`. Returns one maximum influence value per block, suitable for GEV fitting.
+- `rmaxdfbeta(n = 100L, n_set = 1L, x_dist = rnorm, r_dist = rnorm)`: Simulates a single draw from the distribution of the maximum DFBETA over sets of size `n_set` in a random sample of size `n`. The `x_dist` and `r_dist` arguments are functions taking a single argument (sample size) that generate predictor and residual values, respectively. Used for convergence simulations (e.g., verifying Frechet vs Gumbel behavior).
+- `rdfbeta(n_draw = 10L, n = 100L, n_set = 1L, x_dist = rnorm, r_dist = rnorm)`: Generates `n_draw` random DFBETA values by simulation. Each draw computes the set influence for a random set of size `n_set` in a sample of size `n`. Useful for Monte Carlo study of the influence distribution (as opposed to the *maximum* influence distribution targeted by `rmaxdfbeta`).
 
-Main testing function implementing the three-step procedure from Section 3.2. Uses FWL to partial out `Z`, estimates tail coefficients of X and R to classify Gumbel vs Frechet (Theorem 1 / Corollary 1), then fits a GEV distribution to block maxima. Returns a list with:
-
-- `$params` -- named vector of GEV parameters (`loc`, `scale`, `shape`).
-- `$set_dfb` -- observed DFBETA of the candidate set.
-- `$block_maxima` -- the block-maxima values used for fitting.
-
-Set `verbose = FALSE` to suppress diagnostic output.
-
----
-
-### `dfbeta_numeric(y, X, set, col_X = 1)`
-
-Computes the exact set influence for a subset `set` in a no-intercept regression of `y` on column `col_X` of `X`. Implements the closed-form formula from Proposition 1 in the univariate (FWL-residualized) case.
-
-An S3 method `dfbeta.numeric` is also registered, allowing dispatch via `stats::dfbeta()` on numeric vectors.
-
----
-
-### `dfb_bmx(X, R, S, block_count)`
-
-Constructs block maxima of set influence for EVD parameter estimation (Step 2). Divides the data (excluding `S`) into blocks, then uses a greedy algorithm within each block to approximate the most influential set of size `|S|`. Returns one maximum influence value per block, suitable for GEV fitting.
-
----
-
-### `rmaxdfbeta(n = 100L, n_set = 1L, x_dist = rnorm, r_dist = rnorm)`
-
-Simulates a single draw from the distribution of the maximum DFBETA over sets of size `n_set` in a random sample of size `n`. The `x_dist` and `r_dist` arguments are functions taking a single argument (sample size) that generate predictor and residual values, respectively. Used for convergence simulations (e.g., verifying Frechet vs Gumbel behavior).
-
----
-
-### `rdfbeta(n_draw = 10L, n = 100L, n_set = 1L, x_dist = rnorm, r_dist = rnorm)`
-
-Generates `n_draw` random DFBETA values by simulation. Each draw computes the set influence for a random set of size `n_set` in a sample of size `n`. Useful for Monte Carlo study of the influence distribution (as opposed to the *maximum* influence distribution targeted by `rmaxdfbeta`).
-
----
 ## Replication
 
 The `paper/` directory contains scripts to replicate all figures, tables, and applications from the paper.
@@ -131,6 +102,7 @@ The `data/` directory contains datasets used in the paper's empirical applicatio
 | `communities.data` | UCI Communities and Crime dataset | `paper/25_application_communities.R` |
 | `lsa.RData` | Law School Admissions data | `paper/22_application_law.R` |
 | `SparrowsElphick.txt` | Elphick's Sparrows dataset | `paper/21_application_sparrows.R` |
+| `rugged_data.csv` | Ruggedness and GPD data | `paper/20_application_rugged.R` |
 
 ## Citation
 

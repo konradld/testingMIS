@@ -6,25 +6,25 @@
 #'
 #' @param X Vector of predictor values
 #' @param R Vector of residual values
-#' @param S Vector of indices for the influential observation set
+#' @param set Vector of indices for the influential observation set
 #' @param block_count Number of blocks to divide the data into
 #'
 #' @return Numeric vector of block maxima DFBETA values
 #'
 #' @export
-dfb_bmx <- function(X, R, S, block_count) {
-  sgn <- sign(sum(X[S] * R[S]))
+dfb_bmx <- function(X, R, set, block_count) {
+  sgn <- sign(sum(X[set] * R[set]))
   if (sgn == 0) {
-    stop("dfbeta of S is exactly zero")
+    stop("dfbeta of set is exactly zero")
   }
   which.extr <- if (sgn > 0) which.max else which.min
 
   # Remove influential set from inference set
-  X <- X[-S]
-  R <- R[-S]
+  X <- X[-set]
+  R <- R[-set]
 
   sumX2 <- sum(X^2)
-  nS <- length(S)
+  nS <- length(set)
   block_size <- length(X) %/% block_count
   Xbl <- make_blocks(X, block_size)
   Rbl <- make_blocks(R, block_size)

@@ -62,7 +62,7 @@ estimate_dfb_evd <- function(
 
   # Get block maxima and fit EVD
 
-  Delta_bmx <- abs(dfb_bmx(X, R, S = set, block_count))
+  Delta_bmx <- abs(dfb_bmx(X, R, set = set, block_count))
   fit_evd_bm <- evd::fgev(Delta_bmx, shape = tail_coef)
   fit_evd_bm$estimate["shape"] <- tail_coef
 

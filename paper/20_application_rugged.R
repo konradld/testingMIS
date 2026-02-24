@@ -3,9 +3,7 @@ library("testingMIS")
 library("dplyr")
 
 # ── Data & Model ──────────────────────────────────────────────────────────────
-ruggedness <- read.csv(
-  "https://github.com/nk027/influential_sets/raw/refs/heads/main/paper/data/rugged_data.csv"
-) |>
+ruggedness <- read.csv("data/rugged_data.csv") |>
   dplyr::mutate(diamonds = gemstones / (land_area / 100))
 # Replace old name in the dataset
 ruggedness[ruggedness[, "country"] == "Swaziland", "country"] <- "Eswatini"

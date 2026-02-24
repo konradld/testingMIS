@@ -4,14 +4,14 @@
 \alias{dfb_bmx}
 \title{Set Influence Block Maxima}
 \usage{
-dfb_bmx(X, R, S, block_count)
+dfb_bmx(X, R, set, block_count)
 }
 \arguments{
 \item{X}{Vector of predictor values}
 
 \item{R}{Vector of residual values}
 
-\item{S}{Vector of indices for the influential observation set}
+\item{set}{Vector of indices for the influential observation set}
 
 \item{block_count}{Number of blocks to divide the data into}
 }
