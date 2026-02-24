@@ -5,9 +5,9 @@
 #' and fits a generalized extreme value distribution to block maxima.
 #'
 #' @param y Response variable vector
-#' @param X1 Primary predictor variable of interest
-#' @param Xother Matrix of other predictor variables to be marginalized out
-#' @param S Vector of indices for observations whose influence is being assessed
+#' @param x Primary predictor variable of interest
+#' @param Z Matrix of other predictor variables to be marginalized out
+#' @param set Vector of indices for observations whose influence is being assessed
 #' @param block_count Number of blocks to divide the data into
 #' @param verbose Logical indicating whether to print results
 #'
@@ -16,16 +16,15 @@
 #' @export
 #' @importFrom stats lm residuals pnorm rnorm
 #' @importFrom evd fgev
-#'
 estimate_dfb_evd <- function(
   y,
-  X1,
-  Xother,
-  S,
+  x,
+  Z,
+  set,
   block_count = 20,
   verbose = TRUE
 ) {
-  fwl_vars <- fwl(y = y, X1 = X1, X2 = Xother)
+  fwl_vars <- fwl(y = y, X = x, Z = Z)
 
   Y <- fwl_vars[, 1]
   X <- fwl_vars[, 2]
@@ -33,11 +32,11 @@ estimate_dfb_evd <- function(
   fwl_lm <- lm(Y ~ X - 1)
   R <- fwl_lm |> residuals()
 
-  Sdfb <- dfbeta_numeric(Y, X, S)
+  set_dfb <- dfbeta_numeric(Y, X, set)
 
   # Check if X and R are sufficiently small-tailed
-  bm_X <- apply(make_blocks(X[-S], length(X[-S]) %/% block_count), 2, max)
-  bm_R <- apply(make_blocks(R[-S], length(R[-S]) %/% block_count), 2, max)
+  bm_X <- apply(make_blocks(X[-set], length(X[-set]) %/% block_count), 2, max)
+  bm_R <- apply(make_blocks(R[-set], length(R[-set]) %/% block_count), 2, max)
 
   x_evd <- evd::fgev(bm_X)
   r_evd <- evd::fgev(bm_R)
@@ -63,9 +62,13 @@ estimate_dfb_evd <- function(
 
   # Get block maxima and fit EVD
 
-  Delta_bmx <- abs(dfb_bmx(X, R, S = S, block_count))
+  Delta_bmx <- abs(dfb_bmx(X, R, S = set, block_count))
   fit_evd_bm <- evd::fgev(Delta_bmx, shape = tail_coef)
   fit_evd_bm$estimate["shape"] <- tail_coef
 
-  list(params = fit_evd_bm$estimate, set_dfb = Sdfb, block_maxima = Delta_bmx)
+  list(
+    params = fit_evd_bm$estimate,
+    set_dfb = set_dfb,
+    block_maxima = Delta_bmx
+  )
 }

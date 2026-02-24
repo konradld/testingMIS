@@ -1,25 +1,5 @@
-source('R/01_estimate_dfb_evd.R')
-source('R/05_rmaxdfbeta.R')
-
-rdfbeta <- function(
-  draw,
-  n,
-  nS = 1,
-  xdist = \(n) rnorm(n),
-  rdist = \(n) rnorm(n)
-) {
-  X <- matrix(xdist(draw * nS), ncol = nS)
-  R <- matrix(rdist(draw * nS), ncol = nS)
-
-  if (identical(xdist, \(n) rnorm(n))) {
-    D <- rchisq(draw, n - nS)
-  } else {
-    D <- replicate(draw, sum(xdist(n - nS)^2))
-  }
-
-  dfb <- rowSums(R * X) / D
-  return(dfb)
-}
+library("testingMIS")
+# devtools::load_all()
 
 n <- c(25, 50, 100)
 dfb <- sapply(n, \(i) rdfbeta(1e7, i, 1))
