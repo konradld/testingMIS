@@ -23,9 +23,6 @@ The implementation provides:
 ## Installation
 
 ```r
-# Install external dependencies
-install.packages(c("devtools", "evd"))
-
 # Install from GitHub
 devtools::install_github("konradld/testing_mis")
 ```
@@ -43,7 +40,7 @@ then fits a GEV distribution to $\Delta$ block-maxima to assess whether the infl
 ---
 
 
-#### `dfbeta.numeric(Y, X, S, i_Xcol = 1)`
+#### `dfbeta(Y, X, S, i_Xcol = 1)`
 
 Computes the exact set influence $\Delta(S)$ for a subset `S` in a no-intercept simple regression of `Y` on a column of `X`. This implements the closed-form formula from Proposition 1 of the paper in the univariate (FWL-residualized) case.
 
@@ -63,49 +60,15 @@ Simulates a single draw from the distribution of $\Delta_{\max}$ over sets of si
 
 ---
 
-
-### Helper Functions
-
-#### `fwl(y, X1, X2)`
-
-Implements the Frisch-Waugh-Lovell projection: residualizes `y` and `X1` on `X2` via QR decomposition. This reduces the multivariate regression to an equivalent univariate problem (see footnote 2 of the paper), enabling all subsequent influence computations in the simple regression setting.
-
----
-
-
-#### `make_blocks(X, block_size)`
-
-Reshapes a vector `X` into a matrix with `block_size` rows. Remainder elements beyond a full block are dropped.
-
-
-## Dependency Graph
-
-```
-estimate_dfb_evd
-├── fwl
-├── dfbeta.numeric
-├── make_blocks
-├── dfb_bmx
-│   └── make_blocks
-└── evd::fgev
-
-rmaxdfbeta
-└── (standalone)
-
-dfbeta.numeric
-└── (standalone)
-```
-
 ## Quick Example
 
 The testing procedure follows three steps from Section 3.2 of the paper: (1) choose the EVD family based on tail behavior, (2) estimate EVD parameters via block maxima, and (3) perform the hypothesis test.
 
 ```r
-library(evd)
-source('R/01_estimate_dfb_evd.R')
+library("testingMIS")
 
 set.seed(42)
-n <- 500
+n <- 500L
 X1 <- rnorm(n)
 X2 <- rnorm(n)
 y  <- 2 * X1 + X2 + rnorm(n)
@@ -115,18 +78,18 @@ S <- 1:5
 
 # Steps 1-2: estimate the EVD (selects Gumbel vs Fréchet, fits parameters)
 result <- estimate_dfb_evd(y, X1, Xother = cbind(1, X2), S, block_count = 20)
-
 # GEV parameters for the DFBETA block-maxima distribution
 result$params
-
 # Observed DFBETA of the suspicious set
 result$set_dfb
 
 # Step 3: p-value — is this influence excessive?
-1 - evd::pgev(abs(result$set_dfb),
-              loc   = result$params["loc"],
-              scale = result$params["scale"],
-              shape = result$params["shape"])
+1 - evd::pgev(
+  abs(result$set_dfb),
+  loc = result$params["loc"],
+  scale = result$params["scale"],
+  shape = result$params["shape"]
+)
 ```
 
 ## Citation
@@ -141,6 +104,3 @@ result$set_dfb
 }
 ```
 
-## License
-
-GNU General Public License version 3 (GPLv3)
